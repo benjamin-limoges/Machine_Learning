@@ -9,7 +9,7 @@ import csv
 import sys
 
 # Returns an array that has the permutation number for each data
-# point.
+
 def assignRandom( length, part_len ):
 
 	np.random.seed(seed = 1337)
