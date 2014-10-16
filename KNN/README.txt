@@ -34,4 +34,8 @@ This implements the kth nearest neighbor algorithm, using 3 different weighting 
 
 2. Sets up KNN.  It does this by reading in the data, extracting the first line as a header, and randomly assigning each line a partition.  Returns a tuple containing the dataframe, the header row (minus the label's name), the label (or classification), and the randomly assigned partition numbers.
 
-3. Builds KNN.  It does this without normalizing the data.
+3. Builds KNN.  It does this without normalizing the data.  For each k from 1 to num_neighbors (inclusive and only the odd integers) it builds holding one partition out as test data.  It tests the accuracy using the three different distance metrics.  It then iterates through each of the held out partitions, the remainder being the training set.  The average for each of the runs is saved, and plotted.
+
+4. After running KNN, the dataframe has its feature space converted to z-scores.  This is then returned to the main function.
+
+5. Same as step 3 except implements with features in z-scores.
