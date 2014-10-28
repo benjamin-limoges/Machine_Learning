@@ -8,6 +8,47 @@ import numpy as np
 import csv
 import sys
 
+def main():
+	if len(sys.argv) == 4:
+
+		infile = sys.argv[1]
+		neighbor_num = int(sys.argv[2])
+		part_len = int(sys.argv[3])
+
+		if neighbor_num < 0:
+			warning_message = """
+			Number of neighbors must be an odd postive integer
+			"""
+			raise Exception(warning_message)
+		
+		elif neighbor_num % 2 == 0:
+			warning_message = """
+			Number of neighbors must be an odd positive integer
+			"""
+			raise Exception(warning_message)
+
+		elif part_len <= 0:
+			warning_message = """
+			Number of partitions must a positive integer
+			"""
+			raise Exception(warning_message)
+
+		# Main control for the file
+		tup = setupkNN(infile, part_len)
+		kNN(tup, neighbor_num, part_len, infile, "Unnormalized")
+		tup = z_score_normalize(tup)
+		kNN(tup, neighbor_num, part_len, infile, "Normalized")
+
+	else:
+		
+		warning_message = """ 
+		Incorrect running format.\n 
+		Please provide an input file, then an
+		integer for number of neighbors, then
+		an integer for number of partitions.
+		"""
+		raise Exception(warning_message)
+
 # Returns an array that has the permutation number for each data
 
 def assignRandom( length, part_len ):
@@ -130,45 +171,6 @@ def z_score_normalize( tup ):
 	return(df, features, label, test_idx)
 
 
-def main():
-	if len(sys.argv) == 4:
 
-		infile = sys.argv[1]
-		neighbor_num = int(sys.argv[2])
-		part_len = int(sys.argv[3])
-
-		if neighbor_num < 0:
-			warning_message = """
-			Number of neighbors must be an odd postive integer
-			"""
-			raise Exception(warning_message)
-		
-		elif neighbor_num % 2 == 0:
-			warning_message = """
-			Number of neighbors must be an odd positive integer
-			"""
-			raise Exception(warning_message)
-
-		elif part_len <= 0:
-			warning_message = """
-			Number of partitions must a positive integer
-			"""
-			raise Exception(warning_message)
-
-		# Main control for the file
-		tup = setupkNN(infile, part_len)
-		kNN(tup, neighbor_num, part_len, infile, "Unnormalized")
-		tup = z_score_normalize(tup)
-		kNN(tup, neighbor_num, part_len, infile, "Normalized")
-
-	else:
-		
-		warning_message = """ 
-		Incorrect running format.\n 
-		Please provide an input file, then an
-		integer for number of neighbors, then
-		an integer for number of partitions.
-		"""
-		raise Exception(warning_message)
 
 main()
