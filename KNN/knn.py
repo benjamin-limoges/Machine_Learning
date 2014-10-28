@@ -8,12 +8,13 @@ import numpy as np
 import csv
 import sys
 
-def main():
-	if len(sys.argv) == 4:
+def main( args ):
 
-		infile = sys.argv[1]
-		neighbor_num = int(sys.argv[2])
-		part_len = int(sys.argv[3])
+	if len(args) == 4:
+
+		infile = args[1]
+		neighbor_num = int(args[2])
+		part_len = int(args[3])
 
 		if neighbor_num < 0:
 			warning_message = """
@@ -49,54 +50,9 @@ def main():
 		"""
 		raise Exception(warning_message)
 
-# Returns an array that has the permutation number for each data
 
-def assignRandom( length, part_len ):
-
-	np.random.seed(seed = 1337)
-	test_idx = np.random.randint( 0, part_len, length )
-
-	return test_idx
-
-# Returns a tuple with the dataframe, features list, label name,
-# number of partitions (as an integer), and an array that labels
-# the partition number for each data point.
-def setupkNN( infile, part_len ):
-
-	tup = loadData( infile )
-
-	# Extracts the loaded data
-	df = tup[0]
-	features = tup[1]
-	label = features.pop()
-
-	# Assign fold number
-	test_idx = assignRandom(len(df), part_len)
-
-	return (df, features, label, test_idx)
-
-# Tuple returned has a panadas dataframe in the 0th position
-# In the first is the header of the csv
-def loadData( infile ):
-
-	# Sets the random seed
-	np.random.seed(seed = 1337)
-
-	# Reads data into the pandas dataframe
-	df = pd.read_csv( infile )
-
-	# Gets the names of the features, label
-	infile_1 = open( infile )
-	header = infile_1.next()
-	infile_1.close()
-
-	header = header.rstrip('\n')
-	header = header.split(',')
-
-	return (df, header)
-
-# Implements the kth nearest neighbor algorithm and stores the results
-# It calls the plots 
+# Implements the kth nearest neighbor algorithm and stores the results.
+# Calls plots to produce graphs 
 def kNN( tup, neighbor_num, part_len, infile, normalization ):
 	df = tup[0]
 	features = tup[1]
@@ -145,16 +101,64 @@ def plots( results, infile, neighbor_num, normalization ):
 	plt.plot(result_uniform.n, result_uniform.accuracy, label = "Uniform")
 	plt.plot(result_distance.n, result_distance.accuracy, label = "Distance")
 	plt.plot(results_log.n, results_log.accuracy, label = "Log(x)")
-	#plt.axis([1,neighbor_num, 60, 100])
+	
 	plt.xlabel('Varying Values of K')
-	plt.ylabel('Accuracy')
 	plt.xticks(result_uniform.n)
+
+	plt.ylabel('Accuracy')
+	
 	title = "Accuracy of Kth Nearest Neighbor on " + infile[:-4].upper() + ", " + normalization
 	plt.title(title)
+	
 	plt.legend()
+	
 	save_file = "accuracy_" + str(infile[:-4]) + "_" + normalization + ".png"
 	plt.savefig(save_file)
+	
 	plt.close()
+
+# Returns a tuple with the dataframe, features list, label name,
+# number of partitions (as an integer), and an array that labels
+# the partition number for each data point.
+def setupkNN( infile, part_len ):
+
+	tup = loadData( infile )
+
+	# Extracts the loaded data
+	df = tup[0]
+	features = tup[1]
+	label = features.pop()
+
+	# Assign fold number
+	test_idx = assignRandom(len(df), part_len)
+
+	return (df, features, label, test_idx)
+
+# Tuple returned has a panadas dataframe in the 0th position
+# In the first is the header of the csv
+def loadData( infile ):
+
+	np.random.seed(seed = 1337)
+
+	df = pd.read_csv( infile )
+
+	# Gets the names of the features, label
+	infile_1 = open( infile )
+	header = infile_1.next()
+	infile_1.close()
+
+	header = header.rstrip('\n')
+	header = header.split(',')
+
+	return (df, header)
+
+# Returns an array that has the permutation number for each data
+def assignRandom( length, part_len ):
+
+	np.random.seed(seed = 1337)
+	test_idx = np.random.randint( 0, part_len, length )
+
+	return test_idx
 
 # Changes each of the columns except the label into z-score normalized
 # random variables.
@@ -170,7 +174,4 @@ def z_score_normalize( tup ):
 
 	return(df, features, label, test_idx)
 
-
-
-
-main()
+main(sys.argv)
