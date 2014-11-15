@@ -71,9 +71,7 @@ def assignRandom( length ):
 # Calls plots to produce graphs 
 def kNN( df, tup, normalization ):
 	
-	features = tup[0]
-	label = tup[1]
-	test_idx = tup[2]
+	features, label, test_idx = tup
 
 	label = label.rstrip()
 
@@ -106,7 +104,7 @@ def kNN( df, tup, normalization ):
 		
 			overall_accuracy = sum(accuracy) / float(len(accuracy))
 			results[names[weight]].append([n, overall_accuracy])
-			#print "Neighbors: %d, Accuracy: %f, Weights: %s" %(n, overall_accuracy, names[weight])
+			print "Neighbors: %d, Accuracy: %f, Weights: %s" %(n, overall_accuracy, names[weight])
 
 	plots( results, normalization )
 
