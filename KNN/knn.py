@@ -1,3 +1,5 @@
+# TODO : implement ggplot instead of matplotlib
+
 from sklearn import neighbors
 from collections import defaultdict
 
@@ -13,15 +15,18 @@ import sys
 INFILE = "iris.csv"
 MAX_NEIGHBORS = 9
 PARTS = 5
-SEED = 1337
+SEED = 1878
 
 def main( args ):
 
 	# Main control for the file
-	tup = setupkNN()
-	kNN(tup, "Unnormalized")
-	tup = z_score_normalize(tup)
-	kNN(tup, "Normalized")
+	df, tup = setupkNN()
+
+	kNN(df, tup, "Unnormalized")
+	
+	df = z_score_normalize(df, tup[0])
+	
+	kNN(df, tup, "Normalized")
 
 # Returns a tuple with the dataframe, features list, label name,
 # number of partitions (as an integer), and an array that labels
@@ -34,7 +39,7 @@ def setupkNN():
 	# Assign fold number
 	test_idx = assignRandom( len(df) )
 
-	return (df, features, label, test_idx)
+	return df, (features, label, test_idx)
 
 # Tuple returned has a panadas dataframe in the 0th position
 # In the first is the header of the csv
@@ -64,12 +69,11 @@ def assignRandom( length ):
 
 # Implements the kth nearest neighbor algorithm and stores the results.
 # Calls plots to produce graphs 
-def kNN( tup, normalization ):
+def kNN( df, tup, normalization ):
 	
-	df = tup[0]
-	features = tup[1]
-	label = tup[2]
-	test_idx = tup[3]
+	features = tup[0]
+	label = tup[1]
+	test_idx = tup[2]
 
 	label = label.rstrip()
 
@@ -133,16 +137,11 @@ def plots( results, normalization ):
 
 # Changes each of the columns except the label into z-score normalized
 # random variables.
-def z_score_normalize( tup ):
-
-	df = tup[0]
-	features = tup[1]
-	label = tup[2]
-	test_idx = tup[3]
+def z_score_normalize( df, features ):
 
 	for col in features:
-		df[col] = (df[col] - df[col].mean())/df[col].std(ddof=0)
+		df[col] = (df[col] - df[col].mean()) / df[col].std(ddof=0)
 
-	return (df, features, label, test_idx)
+	return df
 
 main(sys.argv)
