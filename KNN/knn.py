@@ -41,6 +41,15 @@ def setupkNN():
 
 	return df, (features, label, test_idx)
 
+# Returns an array that has the permutation number for each data
+def assignRandom( length ):
+
+	np.random.seed( seed = SEED )
+	test_idx = np.random.randint( 0, PARTS, length )
+
+	return test_idx
+
+
 # Tuple returned has a panadas dataframe in the 0th position
 # In the first is the header of the csv
 def loadData():
@@ -59,13 +68,6 @@ def loadData():
 
 	return df, header
 
-# Returns an array that has the permutation number for each data
-def assignRandom( length ):
-
-	np.random.seed( seed = SEED )
-	test_idx = np.random.randint( 0, PARTS, length )
-
-	return test_idx
 
 # Implements the kth nearest neighbor algorithm and stores the results.
 # Calls plots to produce graphs 
