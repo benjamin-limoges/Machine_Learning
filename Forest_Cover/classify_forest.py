@@ -1,5 +1,4 @@
 from sklearn import linear_model
-
 from sklearn.ensemble import RandomForestClassifier
 
 import numpy as np
@@ -44,25 +43,28 @@ def run_perceptron( df, features, label, test_idx ):
 
 def run_forest( df, features, label, test_idx ):
 
+	tree_size = [10, 100, 1000, 10000]
+
 	overall_accuracy = []
 	print "\nTesting Random Forest:"
 
-	for i in range(0,10):
-		train = (df[test_idx == i], features, label)
-		test = (df[test_idx != i], features, label)
+	for size in tree_size:
+		for i in range(0,10):
+			train = (df[test_idx == i], features, label)
+			test = (df[test_idx != i], features, label)
 
-		forest = train_data_forest( train )
-		acc = test_data_forest( test, forest )
+			forest = train_data_forest( train, size )
+			acc = test_data_forest( test, forest )
 
-		overall_accuracy.append(acc)
+			overall_accuracy.append(acc)
  
-	print "Overall Accuracy is %.3f" %(sum(overall_accuracy)/len(overall_accuracy))
+		print "Overall Accuracy for %d trees is %.3f" %(size, sum(overall_accuracy)/len(overall_accuracy))
 
-def train_data_forest( tup ):
+def train_data_forest( tup, size ):
 
 	df, features, label = tup
 
-	forest = RandomForestClassifier(n_estimators = 1000, n_jobs = 2)
+	forest = RandomForestClassifier(n_estimators = size, n_jobs = 2)
 	forest.fit( df[features], df[label] )
 
 	return forest
