@@ -1,6 +1,7 @@
 # TODO : implement ggplot instead of matplotlib
 
 from sklearn import neighbors
+from sklearn.datasets import load_iris
 from collections import defaultdict
 
 import pandas as pd

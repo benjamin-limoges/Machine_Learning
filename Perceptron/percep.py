@@ -5,10 +5,10 @@ import numpy as np
 
 import csv
 
-ETA = 0.001
-INITIALIZATION = 500
-TRAIN = "sonar_train_nonoise.csv"
-TEST = "sonar_test_nonoise.csv"
+ETA = 0.005
+CYCLES = 1000
+TRAIN = "sonar_train_noise.csv"
+TEST = "sonar_test_noise.csv"
 
 # Inputs: Takes a string as a file name to be read in.
 # Outputs: Returns a tuple containing a pandas dataframe and the names
@@ -30,30 +30,36 @@ def load_csv( infile ):
 	return (df, header, label)
 
 
-def train_data( training_tup ):
+def train_data( training_tup, penalty ):
 
 	train, features, label = training_tup
 
-	percep = linear_model.Perceptron(penalty = None, fit_intercept = True, eta0 = ETA, n_iter = INITIALIZATION)
+	percep = linear_model.Perceptron(penalty = penalty, fit_intercept = True, eta0 = ETA, n_iter = CYCLES)
 	percep.fit( train[features], train[label])
 
 	return percep
 
-def test_data( test_tup, percep ):
+def test_data( test_tup, percep, penalty ):
 
 	test, features, label = test_tup
 
-	print percep.score( test[features], test[label] )*100, "%"
+	x = percep.score( test[features], test[label] )
 
+	print "With penalty %s, accuracy is %.3f" %(penalty, x)
 
 def main():
 
-	training_tup = load_csv(TRAIN)
+	print "Cycles are %d" %CYCLES
+	print "ETA IS %.3f" %ETA
 
+	training_tup = load_csv(TRAIN)
 	test_tup = load_csv(TEST)
 
-	percep = train_data( training_tup )
+	penalties = ["None", "l1", "l2", "elasticnet"]
 
-	test_data( test_tup, percep )
+	for penalty in penalties:
+
+		percep = train_data( training_tup, penalty )
+		test_data( test_tup, percep, penalty )
 
 main()
