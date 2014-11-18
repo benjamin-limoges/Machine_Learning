@@ -1,9 +1,13 @@
 import threading
 import time
+from __future__ import print_function
 
-def loop1_10():
-	for i in range(1,11):
+class MyThread(threading.Thread):
+	def run(self):
+		print("{} started!".format(self.getName()))
 		time.sleep(1)
-		print(i)
+		print("{} finished!".format(self.getName()))
 
-threading.Thread(target = loop1_10).start()
+if __name__ == "__main__":
+	for x in range(4):
+		mythread = 
