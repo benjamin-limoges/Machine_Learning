@@ -26,7 +26,8 @@ def main():
 	df, features, label = load_csv( TRAIN )
 	test_idx = assign_random( len(df) )
 
-	run_perceptron( df, features, label, test_idx )
+	percep_acc = run_perceptron( df, features, label, test_idx )
+
 	run_logit( df, features, label, test_idx )
 	run_adaboost( df, features, label, test_idx )
 	run_forest( df, features, label, test_idx )
@@ -188,17 +189,12 @@ def assign_random( length ):
 
 def load_csv( infile ):
 
-	df = pd.read_csv(infile)
+	df = pd.read_csv(infile, header = 0)
 
-	infile_1 = open(infile)
-	header = infile_1.next()
-	infile_1.close
+	features = df.columns.values.tolist()
 
-	header = header.strip('\n')
-	header = header.split(',')
+	label = features.pop()
 
-	label = header.pop()
-	label = label.rstrip()
 	return (df, header, label)
 
 main()
