@@ -42,7 +42,7 @@ def test_forest( test_set, features, forest ):
 
 def fit_forest( training_set, features, label ):
 
-	forest = RandomForestClassifier( n_estimators = 1000, n_jobs = 2 )
+	forest = RandomForestClassifier( n_estimators = 1500, bootstrap = False, max_features = "sqrt", n_jobs = 2 )
 	forest.fit( training_set[features], training_set[label] )
 
 	return forest
