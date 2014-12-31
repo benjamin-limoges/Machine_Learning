@@ -15,9 +15,10 @@ class DBSCAN:
 		for i in range(0, len(self.data.data)):
 			distances.append([])
 			for j in range(0, len(self.data.data)):
-				print self.data.data[i], self.data.data[j]
-				print self.find_distances(self.data.data[i], self.data.data[j])
+				distances[i].append(self.find_distances(self.data.data[i], self.data.data[j]))
 
+		print len(distances)
+		print distances[0]
 	def find_distances(self, point1, point2):
 		features = len(point1['point'])
 		distance = 0
