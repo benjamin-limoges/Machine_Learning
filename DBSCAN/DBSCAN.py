@@ -7,7 +7,8 @@ class DBSCAN:
 
 	def train_DBSCAN(self):
 		distances = self.create_distances()
-		print distances
+		print len(distances)
+		print len(distances[0])
 
 	def create_distances(self):
 		distances = []
@@ -17,8 +18,7 @@ class DBSCAN:
 			for j in range(0, len(self.data.data)):
 				distances[i].append(self.find_distances(self.data.data[i], self.data.data[j]))
 
-		print len(distances)
-		print distances[0]
+		return distances
 	def find_distances(self, point1, point2):
 		features = len(point1['point'])
 		distance = 0

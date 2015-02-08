@@ -7,6 +7,7 @@ def main():
 	data.normalize()
 
 	x = DBSCAN( data , 2, 3 )
+	x.train_DBSCAN()
 
 
 main()
