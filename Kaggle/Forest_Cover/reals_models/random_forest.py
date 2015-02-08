@@ -42,4 +42,5 @@ def main():
 	for i in range(PARTS):
 		forests[i].score_forest()
 
-main()
+if __name__ == '__main__':
+	main()
