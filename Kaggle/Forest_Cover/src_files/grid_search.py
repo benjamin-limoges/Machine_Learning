@@ -49,4 +49,6 @@ def search(model, parameters, filename):
         outfile.write("\n")
 
     outfile.close()
+
+    
     return clf.best_estimator_

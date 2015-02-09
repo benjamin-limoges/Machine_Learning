@@ -6,11 +6,11 @@ classifiers = [ExtraTreesClassifier(), RandomForestClassifier(),
 			   LogisticRegression()]
 
 
-parameters = [{'n_estimators': [10, 100],
+parameters = [{'n_estimators': [10, 50],
 			   'max_features': ['sqrt', 'log2', None],
 			   'max_depth': [3, 5, None],
 			   'n_jobs': [4]},
-			  {'n_estimators': [10, 100],
+			  {'n_estimators': [10, 50],
 			   'max_features': ['sqrt', 'log2', None],
 			   'max_depth': [3, 5, None],
 			   'n_jobs': [4]},
