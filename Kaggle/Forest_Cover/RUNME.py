@@ -3,6 +3,7 @@ from grid_search import search, read_data
 from sklearn.cross_validation import train_test_split
 
 import os
+import numpy as np
 
 def main():
 	names = global_vars.model_names
@@ -23,8 +24,8 @@ def main():
         data[features], data[label], test_size=0.33, random_state=0)
 	for model in models:
 		model.fit(X_train, y_train)
-		outfile.write( model )
-		outfile.write( model.score(X_test, y_test) )
+		outfile.write( str(model) )
+		outfile.write( np.asarray(model.score(X_test, y_test)) )
 
 	outfile.close()
 main()
